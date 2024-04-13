@@ -2,8 +2,9 @@ import React, { Component } from "react";
 import CardList from "../components/CardList";
 import { robots } from "../robots";
 import SearchBox from '../components/SearchBox';
-import './App.css'
 import Scroll from "../components/Scroll";
+import ErrorBoundry from "../components/ErrorBoundry";
+import './App.css'
 
 class App extends Component {
     constructor() {
@@ -29,6 +30,26 @@ class App extends Component {
             return robot.name.toLowerCase().includes(this.state.searchfield.toLowerCase());
         })
 
+
+        // AND THIS IS MORE CLEANER....
+
+        return !this.state.robots.length ?
+
+            <h1 className="tc">Loading...</h1> :
+            (
+                <div className="tc">
+                    <h1 className="f2">RoboFriends</h1>
+                    <SearchBox searchChange={this.onSearchChange} />
+                    <Scroll>
+                        <ErrorBoundry>
+
+                            <CardList robots={filteredRobots} />
+                        </ErrorBoundry>
+                    </Scroll>
+                </div>
+            );
+
+
         //ANOTHER WAY TO DO IT
 
         // if (this.state.robots.length === 0) {
@@ -48,21 +69,6 @@ class App extends Component {
         //     );
         // }
 
-        // AND THIS IS MORE CLEANER....
-
-        return !this.state.robots.length ?
-
-         <h1 className="tc">Loading...</h1> :
-            (
-                <div className="tc">
-                    <h1 className="f2">RoboFriends</h1>
-                    <SearchBox searchChange={this.onSearchChange} />
-                    <Scroll>
-                        <CardList robots={filteredRobots} />
-                    </Scroll>
-                </div>
-            );
-        
     }
 }
 
